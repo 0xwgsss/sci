@@ -219,7 +219,41 @@
   <input type="range" id="pressureSlider" min="0" max="100" value="35" step="1" aria-label="foot traffic rate">
 </div>
 
+<div id="debugBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:999;background:#b00020;color:#fff;font-family:monospace;font-size:12px;padding:10px;max-height:40vh;overflow:auto;white-space:pre-wrap;"></div>
 <script>
+/* =========================================================
+   DEBUG: show any load/runtime error visibly on the page,
+   since mobile devices make the console hard to reach.
+   Remove this whole block once things are working.
+   ========================================================= */
+(function debug(){
+  const banner = document.getElementById('debugBanner');
+  function show(msg){
+    banner.style.display = 'block';
+    banner.textContent += msg + '\n';
+  }
+  window.addEventListener('error', (e) => {
+    show('JS ERROR: ' + (e.message || e.error) + ' @ ' + (e.filename||'') + ':' + (e.lineno||''));
+  });
+  window.addEventListener('unhandledrejection', (e) => {
+    show('PROMISE REJECTION: ' + e.reason);
+  });
+  window.addEventListener('load', () => {
+    if (typeof THREE === 'undefined') {
+      show('THREE.JS DID NOT LOAD — the CDN script (unpkg.com) was blocked or failed. Check your network/ad-blocker, or this browser may be blocking third-party scripts.');
+      return;
+    }
+    if (typeof THREE.OrbitControls === 'undefined') {
+      show('THREE.OrbitControls DID NOT LOAD — same CDN issue as above, second script tag.');
+    }
+    const testCanvas = document.createElement('canvas');
+    const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+    if (!gl) {
+      show('WEBGL IS NOT AVAILABLE in this browser/webview. Try opening this page in a full browser app (Safari or Chrome) instead of an in-app browser (e.g. from Messages, Instagram, etc.), and make sure Low Power Mode / battery saver is off.');
+    }
+  });
+})();
+
 /* =========================================================
    0. GLOBAL STATE — a walking figure triggers the whole chain.
    The slider only controls how often people cross (foot traffic).
@@ -613,7 +647,11 @@ function makeWalker(){
     requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);
- } catch(err){ console.error('Sim A failed to start:', err); }
+ } catch(err){
+   console.error('Sim A failed to start:', err);
+   const b = document.getElementById('debugBanner');
+   if(b){ b.style.display='block'; b.textContent += 'SIM A ERROR: ' + err.message + '\n'; }
+ }
 })();
 
 /* =========================================================
@@ -763,7 +801,11 @@ function makeWalker(){
     requestAnimationFrame(animate);
   }
   requestAnimationFrame(animate);
- } catch(err){ console.error('Sim B failed to start:', err); }
+ } catch(err){
+   console.error('Sim B failed to start:', err);
+   const b = document.getElementById('debugBanner');
+   if(b){ b.style.display='block'; b.textContent += 'SIM B ERROR: ' + err.message + '\n'; }
+ }
 })();
 
 if(typeof THREE === 'undefined'){
