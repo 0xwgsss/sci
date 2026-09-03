@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Piezoelectric Tile</title>
+<title>presentation</title>
 
 <!--
   ============================================================
@@ -36,6 +36,9 @@
     --card:#07090d;
     --card-line:rgba(79,141,255,0.35);
     --glow:rgba(79,141,255,0.45);
+    --warn:#ffb020;
+    --danger:#ff4b3e;
+    --good:#38d68c;
   }
 
   *{box-sizing:border-box;}
@@ -56,7 +59,7 @@
 
   .page{
     position:relative; z-index:1;
-    max-width:1180px; margin:0 auto;
+    max-width:980px; margin:0 auto;
     padding:clamp(28px,6vw,64px) clamp(16px,4vw,40px) 140px;
   }
 
@@ -64,7 +67,7 @@
   .hero{
     display:flex; flex-direction:column; align-items:center;
     text-align:center; gap:clamp(18px,3.5vw,30px);
-    margin-bottom:clamp(40px,7vw,72px);
+    margin-bottom:clamp(32px,6vw,56px);
   }
 
   .wave-title{
@@ -108,14 +111,24 @@
     letter-spacing:0.04em;
   }
 
-  /* ---------- SIM CARDS ---------- */
-  .sims{
-    display:grid; grid-template-columns:1fr; gap:clamp(20px,4vw,32px);
+  /* ---------- CONTROL PILLS ROW ---------- */
+  .ctrl-row{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:10px;
+    margin-bottom:clamp(18px,3vw,26px);
   }
-  @media (min-width:980px){
-    .sims{ grid-template-columns:1fr 1fr; }
+  .ctrl-btn{
+    font-family:'Space Grotesk',sans-serif; font-weight:500;
+    font-size:0.78rem; letter-spacing:0.02em;
+    background:rgba(255,255,255,0.03); color:var(--ink);
+    border:1px solid var(--card-line); border-radius:999px;
+    padding:9px 18px; cursor:pointer;
+    transition:border-color .15s ease, color .15s ease, box-shadow .15s ease, background .15s ease;
   }
+  .ctrl-btn:hover{ border-color:var(--blue); color:var(--blue-bright); box-shadow:0 0 16px -6px var(--glow); }
+  .ctrl-btn:active{ transform:translateY(1px); }
+  .ctrl-btn.active{ background:var(--blue); border-color:var(--blue); color:#04070d; box-shadow:0 0 20px -4px var(--glow); }
 
+  /* ---------- SIM CARD ---------- */
   .sim-card{
     position:relative;
     border-radius:20px;
@@ -123,6 +136,7 @@
     border:1px solid var(--card-line);
     box-shadow:0 0 0 1px rgba(79,141,255,0.06), 0 30px 60px -20px rgba(0,0,0,0.9), 0 0 40px -10px var(--glow);
     overflow:hidden;
+    margin-bottom:clamp(18px,3vw,26px);
   }
   .sim-card::after{
     content:""; position:absolute; inset:0; pointer-events:none;
@@ -133,13 +147,72 @@
     position:relative; width:100%;
     aspect-ratio:4/3;
   }
-  @media (min-width:980px){
-    .sim-canvas-wrap{ aspect-ratio:1/1; }
+  @media (min-width:760px){
+    .sim-canvas-wrap{ aspect-ratio:16/9; }
   }
   .sim-canvas-wrap canvas{
     position:absolute; inset:0; width:100%!important; height:100%!important;
     display:block; touch-action:none;
   }
+
+  .hint-pill{
+    position:absolute; top:12px; left:12px; z-index:2;
+    font-size:0.68rem; letter-spacing:0.02em; color:var(--dim);
+    background:rgba(6,8,12,0.6); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid var(--card-line); border-radius:999px;
+    padding:6px 12px; pointer-events:none;
+  }
+
+  .info-panel{
+    position:absolute; left:14px; right:14px; bottom:14px; z-index:3;
+    max-width:420px;
+    background:rgba(4,6,10,0.92);
+    border:1px solid var(--blue); border-radius:14px;
+    padding:16px 18px;
+    box-shadow:0 20px 50px -14px rgba(0,0,0,0.85), 0 0 30px -8px var(--glow);
+    transform:translateY(140%); transition:transform .3s ease;
+  }
+  .info-panel.show{ transform:translateY(0); }
+  .info-panel .label{ margin:0 0 4px; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--blue-bright); font-weight:700; }
+  .info-panel h3{ margin:0; font-size:1rem; color:var(--ink); font-weight:700; text-align:center; }
+  .info-panel p{ margin:0 0 10px; font-size:0.8rem; line-height:1.5; color:var(--dim); }
+  .info-close{ position:absolute; top:10px; right:12px; cursor:pointer; color:var(--dim); font-size:0.9rem; }
+  .info-close:hover{ color:var(--ink); }
+
+  /* ---------- SIM LABELS (Simulator A / Simulator B headers) ---------- */
+  .sim-label{
+    text-align:center; margin:0 0 10px;
+    font-size:0.72rem; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--blue-bright); font-weight:700;
+  }
+  .sim-label span{ color:var(--dim); font-weight:500; letter-spacing:0.04em; text-transform:none; }
+
+  .flow-caption{
+    position:absolute; top:12px; right:12px; z-index:2;
+    font-size:0.64rem; letter-spacing:0.01em; color:var(--dim);
+    background:rgba(6,8,12,0.6); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid var(--card-line); border-radius:999px;
+    padding:6px 12px; pointer-events:none; max-width:62%; text-align:right;
+  }
+  .walk-stats{
+    position:absolute; bottom:12px; left:12px; z-index:2;
+    font-size:0.72rem; color:var(--blue-bright); font-weight:700;
+    background:rgba(6,8,12,0.65); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+    border:1px solid var(--card-line); border-radius:999px;
+    padding:6px 12px;
+  }
+
+  /* ---------- STATUS PILL ---------- */
+  .status-pill{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    font-size:0.78rem; color:var(--ink);
+    background:var(--card); border:1px solid var(--card-line); border-radius:999px;
+    padding:10px 18px; margin:0 auto clamp(18px,3vw,26px); width:fit-content; max-width:100%;
+    text-align:center;
+  }
+  .status-dot{ width:9px; height:9px; border-radius:50%; background:var(--good); box-shadow:0 0 8px 2px var(--good); flex-shrink:0; transition:all .3s ease; }
+  .status-dot.warn{ background:var(--warn); box-shadow:0 0 8px 2px var(--warn); }
+  .status-dot.danger{ background:var(--danger); box-shadow:0 0 8px 2px var(--danger); }
 
   /* ---------- PRESSURE SLIDER (floating control bar) ---------- */
   .pressure-bar{
@@ -161,6 +234,10 @@
     background:var(--blue);
     box-shadow:0 0 10px 3px var(--glow);
     transition:transform .15s ease;
+  }
+  .pressure-readout{
+    flex-shrink:0; font-size:0.72rem; color:var(--blue-bright); font-weight:700;
+    min-width:88px; text-align:right;
   }
   input[type=range]{
     -webkit-appearance:none; appearance:none;
@@ -194,102 +271,85 @@
 <div class="page">
 
   <header class="hero">
-    <h1 class="wave-title" id="pageTitle">YOUR TITLE HERE</h1>
+    <h1 class="wave-title" id="pageTitle">energy saving tile</h1>
     <div class="brand-row">
       <div class="logo-circle" id="logoCircle">
-        <img id="schoolLogo" src="logo/logo.png" alt="">
+        <img id="schoolLogo" src="logo/logo.jpg" alt="">
       </div>
-      <p class="school-name" id="schoolName">YOUR SCHOOL NAME</p>
+      <p class="school-name" id="schoolName">Philsaga High School Foundation INC.</p>
     </div>
   </header>
 
-  <main class="sims">
-    <section class="sim-card" id="simA">
-      <div class="sim-canvas-wrap"><canvas id="canvasA"></canvas></div>
+  <div class="ctrl-row">
+    <button class="ctrl-btn" id="btnStep"> Step Now</button>
+    <button class="ctrl-btn" id="btnNight"> Toggle Night</button>
+    <button class="ctrl-btn" id="btnDemo">▷ Rush-Hour Demo</button>
+    <button class="ctrl-btn" id="btnCharge"> Charge Battery</button>
+    <button class="ctrl-btn" id="btnReset">↻ Reset</button>
+  </div>
+
+  <main>
+    <p class="sim-label">Simulator A <span></span></p>
+    <section class="sim-card" id="walkCard">
+      <div class="sim-canvas-wrap" id="walkWrap">
+        <canvas id="walkCanvas3d"></canvas>
+        <div class="hint-pill"></div>
+        <div class="flow-caption"></div>
+        <div class="walk-stats" id="walkStats">steps: 0 &nbsp;•&nbsp; stored: 0 J</div>
+        <div class="info-panel" id="infoPanelA">
+          <div class="info-close" id="infoCloseA">✕</div>
+          <h3 id="infoNameA">—</h3>
+        </div>
+      </div>
     </section>
-    <section class="sim-card" id="simB">
-      <div class="sim-canvas-wrap"><canvas id="canvasB"></canvas></div>
+
+    <p class="sim-label">Simulator B <span></span></p>
+    <section class="sim-card" id="simCard">
+      <div class="sim-canvas-wrap">
+        <canvas id="labCanvas3d"></canvas>
+        <div class="hint-pill"></div>
+        <div class="info-panel" id="infoPanel">
+          <div class="info-close" id="infoClose">✕</div>
+          <h3 id="infoName">—</h3>
+        </div>
+      </div>
     </section>
+
+    <div class="status-pill">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusText">IDLE — waiting for footsteps</span>
+    </div>
   </main>
 
 </div>
 
 <div class="pressure-bar">
   <div class="pressure-dot" id="pressureDot"></div>
-  <input type="range" id="pressureSlider" min="0" max="100" value="35" step="1" aria-label="foot traffic rate">
+  <input type="range" id="trafficSlider" min="0" max="40" value="10" step="1" aria-label="foot traffic rate">
+  <span class="pressure-readout" id="trafficReadout">10/min</span>
 </div>
 
-<div id="debugBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:999;background:#b00020;color:#fff;font-family:monospace;font-size:12px;padding:10px;max-height:40vh;overflow:auto;white-space:pre-wrap;"></div>
 <script>
 /* =========================================================
-   DEBUG: show any load/runtime error visibly on the page,
-   since mobile devices make the console hard to reach.
-   Remove this whole block once things are working.
-   ========================================================= */
-(function debug(){
-  const banner = document.getElementById('debugBanner');
-  function show(msg){
-    banner.style.display = 'block';
-    banner.textContent += msg + '\n';
-  }
-  window.addEventListener('error', (e) => {
-    show('JS ERROR: ' + (e.message || e.error) + ' @ ' + (e.filename||'') + ':' + (e.lineno||''));
-  });
-  window.addEventListener('unhandledrejection', (e) => {
-    show('PROMISE REJECTION: ' + e.reason);
-  });
-  window.addEventListener('load', () => {
-    if (typeof THREE === 'undefined') {
-      show('THREE.JS DID NOT LOAD — the CDN script (unpkg.com) was blocked or failed. Check your network/ad-blocker, or this browser may be blocking third-party scripts.');
-      return;
-    }
-    if (typeof THREE.OrbitControls === 'undefined') {
-      show('THREE.OrbitControls DID NOT LOAD — same CDN issue as above, second script tag.');
-    }
-    const testCanvas = document.createElement('canvas');
-    const gl = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
-    if (!gl) {
-      show('WEBGL IS NOT AVAILABLE in this browser/webview. Try opening this page in a full browser app (Safari or Chrome) instead of an in-app browser (e.g. from Messages, Instagram, etc.), and make sure Low Power Mode / battery saver is off.');
-    }
-  });
-})();
-
-/* =========================================================
-   0. GLOBAL STATE — a walking figure triggers the whole chain.
-   The slider only controls how often people cross (foot traffic).
+   0. GLOBAL — reduced-motion, slider fill sync
    ========================================================= */
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const speedMul = reduceMotion ? 0.2 : 1;
 
-const traffic = { value: 0.35, target: 0.35 };
-const energyBus = { activity: 0, charge: 0 };
-function triggerStep(amount){
-  energyBus.activity = Math.min(1, energyBus.activity + amount);
-  energyBus.charge = Math.min(1, energyBus.charge + amount*0.09);
-}
-
-const slider = document.getElementById('pressureSlider');
+const slider = document.getElementById('trafficSlider');
+const readout = document.getElementById('trafficReadout');
 const dot = document.getElementById('pressureDot');
 function syncSliderFill(){
-  slider.style.setProperty('--fill', slider.value + '%');
+  slider.style.setProperty('--fill', (slider.value/40*100) + '%');
 }
-slider.value = Math.round(traffic.target*100);
 syncSliderFill();
-slider.addEventListener('input', () => {
-  traffic.target = slider.value / 100;
-  syncSliderFill();
-});
 
-/* decays activity/charge on its own clock, independent of either canvas */
-let busLast = performance.now();
-(function busTick(now){
-  const dt = Math.min(0.05,(now-busLast)/1000); busLast = now;
-  energyBus.activity = Math.max(0, energyBus.activity - dt*1.1*speedMul);
-  energyBus.charge = Math.max(0, energyBus.charge - dt*0.007*speedMul);
-  traffic.value += (traffic.target - traffic.value)*0.05;
-  dot.style.transform = `scale(${1 + energyBus.activity*0.6})`;
-  requestAnimationFrame(busTick);
-})(busLast);
+/* pulse the floating dot briefly on every real footstep */
+let stepPulse = 0;
+(function pulseTick(){
+  stepPulse = Math.max(0, stepPulse - 0.03);
+  dot.style.transform = `scale(${1 + stepPulse*0.7})`;
+  requestAnimationFrame(pulseTick);
+})();
 
 /* logo fallback */
 const logoImg = document.getElementById('schoolLogo');
@@ -352,17 +412,17 @@ logoImg.addEventListener('error', () => logoCircle.classList.add('empty'));
         ctx.beginPath(); ctx.arc(x,y2,1.6,0,Math.PI*2); ctx.fill();
       }
     }
-    helixPhase += dt * 0.35 * speedMul;
+    helixPhase += dt * 0.35;
   }
 
   function step(node){
-    node.x += node.vx * speedMul; node.y += node.vy * speedMul;
+    node.x += node.vx; node.y += node.vy;
     if(node.x < -20) node.x = w+20; if(node.x > w+20) node.x = -20;
     if(node.y < -20) node.y = h+20; if(node.y > h+20) node.y = -20;
   }
 
   function maybeSpark(){
-    if(Math.random() < 0.012 * speedMul && nodes.length > 2){
+    if(Math.random() < 0.012 && nodes.length > 2){
       const a = nodes[Math.floor(Math.random()*nodes.length)];
       const b = nodes[Math.floor(Math.random()*nodes.length)];
       sparks.push({a,b,t:0});
@@ -395,7 +455,7 @@ logoImg.addEventListener('error', () => logoCircle.classList.add('empty'));
     }
 
     maybeSpark();
-    sparks.forEach(s => { s.t += dt * 0.9 * speedMul; });
+    sparks.forEach(s => { s.t += dt * 0.9; });
     sparks = sparks.filter(s => s.t < 1);
     sparks.forEach(s => {
       const x = s.a.x + (s.b.x-s.a.x)*s.t;
@@ -420,396 +480,669 @@ logoImg.addEventListener('error', () => logoCircle.classList.add('empty'));
 function makeRenderer(canvas){
   const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
-  renderer.shadowMap.enabled = false;
+  renderer.shadowMap.enabled = true;
   return renderer;
 }
-
 function fitRenderer(renderer, camera, wrap){
   const w = wrap.clientWidth, h = wrap.clientHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w/h;
   camera.updateProjectionMatrix();
 }
-
-function makeFlowParticles(curve, count, color, size){
-  const group = new THREE.Group();
-  const items = [];
-  const geo = new THREE.SphereGeometry(size, 10, 10);
-  for(let i=0;i<count;i++){
-    const mat = new THREE.MeshBasicMaterial({ color, transparent:true, opacity:0.9 });
-    const mesh = new THREE.Mesh(geo, mat);
-    mesh.visible = false;
-    group.add(mesh);
-    items.push({ mesh, t: i/count });
-  }
-  function update(dt, speed){
-    items.forEach(it => {
-      if(speed <= 0.001){ it.mesh.visible = false; return; }
-      it.mesh.visible = true;
-      it.t = (it.t + dt*speed) % 1;
-      const p = curve.getPointAt(it.t);
-      it.mesh.position.copy(p);
-    });
-  }
-  return { group, update };
-}
-
-/* low-poly walking figure — cylinders + spheres only (three r128 has no CapsuleGeometry) */
-function makeWalker(){
-  const skin = new THREE.MeshStandardMaterial({ color:0xe7ecf6, roughness:0.55, metalness:0.12, emissive:0x1638a0, emissiveIntensity:0.05 });
-  const g = new THREE.Group();
-
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.11,14,14), skin);
-  head.position.y = 0.86; g.add(head);
-
-  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.12,0.15,0.42,10), skin);
-  torso.position.y = 0.56; g.add(torso);
-
-  function limb(len, rad, y, x){
-    const pivot = new THREE.Group(); pivot.position.set(x, y, 0);
-    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(rad, rad*0.85, len, 8), skin);
-    mesh.position.y = -len/2;
-    pivot.add(mesh);
-    g.add(pivot);
-    return pivot;
-  }
-  const legL = limb(0.42, 0.05, 0.34, -0.07);
-  const legR = limb(0.42, 0.05, 0.34,  0.07);
-  const armL = limb(0.34, 0.035, 0.72, -0.19);
-  const armR = limb(0.34, 0.035, 0.72,  0.19);
-
-  return { group:g, legL, legR, armL, armR };
-}
-
-/* =========================================================
-   3. SIM A — a person walks the tiles, triggering the charge
-   ========================================================= */
-(function simA(){
- try{
-  const wrap = document.querySelector('#simA .sim-canvas-wrap');
-  const canvas = document.getElementById('canvasA');
-  const renderer = makeRenderer(canvas);
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
-  camera.position.set(5.2, 3.4, 7.2);
-
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.autoRotate = !reduceMotion;
-  controls.autoRotateSpeed = 0.4;
-  controls.minDistance = 4.5; controls.maxDistance = 14;
-  controls.target.set(0, 0.25, 0);
-
-  scene.add(new THREE.AmbientLight(0x8fa4ff, 0.55));
-  const dir = new THREE.DirectionalLight(0xffffff, 0.9);
-  dir.position.set(5,8,4);
-  scene.add(dir);
-  const rim = new THREE.PointLight(0x4f8dff, 1.2, 14);
-  rim.position.set(-3,3,-2);
-  scene.add(rim);
-
-  // floor
-  const floor = new THREE.Mesh(
-    new THREE.BoxGeometry(10, 0.2, 5.5),
-    new THREE.MeshStandardMaterial({ color:0x0a0d12, roughness:0.85, metalness:0.2 })
-  );
-  floor.position.y = -0.5;
-  scene.add(floor);
-
-  // walkway of pressable tiles
-  const tileGeo = new THREE.BoxGeometry(1.15, 0.28, 1.7);
-  const tiles = [];
-  for(let i=-2;i<=2;i++){
-    const mat = new THREE.MeshStandardMaterial({ color:0xcfd6e6, roughness:0.4, metalness:0.35, emissive:0x1638a0, emissiveIntensity:0 });
-    const t = new THREE.Mesh(tileGeo, mat);
-    t.position.set(i*1.3, -0.24, 0);
-    t.userData = { baseX:i*1.3, pressed:false, mat };
-    scene.add(t);
-    tiles.push(t);
-  }
-
-  // coil / generator, fed by every tile
-  const coilGroup = new THREE.Group();
-  coilGroup.position.set(0, -0.85, 0);
-  scene.add(coilGroup);
-  const coilCore = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.28,0.28,0.5,20),
-    new THREE.MeshStandardMaterial({ color:0x1a2130, metalness:0.6, roughness:0.4 })
-  );
-  coilGroup.add(coilCore);
-  const coilWireMat = new THREE.MeshStandardMaterial({ color:0xb9c4d8, metalness:0.7, roughness:0.3 });
-  const coilCurvePts = [];
-  for(let i=0;i<=60;i++){
-    const a = i/60 * Math.PI * 8;
-    coilCurvePts.push(new THREE.Vector3(Math.cos(a)*0.34, -0.28 + (i/60)*0.56, Math.sin(a)*0.34));
-  }
-  const coilCurve = new THREE.CatmullRomCurve3(coilCurvePts);
-  const coilMesh = new THREE.Mesh(new THREE.TubeGeometry(coilCurve, 160, 0.02, 6, false), coilWireMat);
-  coilGroup.add(coilMesh);
-
-  // wire from coil to battery
-  const battPos = new THREE.Vector3(3.7, -0.15, 0.7);
-  const wireCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0,-0.65,0),
-    new THREE.Vector3(1.5,-0.7,0.3),
-    new THREE.Vector3(2.7,-0.4,0.5),
-    battPos.clone().add(new THREE.Vector3(-0.4,-0.1,0)),
-  ]);
-  const wireMesh = new THREE.Mesh(
-    new THREE.TubeGeometry(wireCurve, 80, 0.028, 6, false),
-    new THREE.MeshStandardMaterial({ color:0x30384a, metalness:0.6, roughness:0.4 })
-  );
-  scene.add(wireMesh);
-  const flow = makeFlowParticles(wireCurve, 10, 0x8ec3ff, 0.045);
-  scene.add(flow.group);
-
-  // battery
-  const battGroup = new THREE.Group();
-  battGroup.position.copy(battPos);
-  scene.add(battGroup);
-  const battShell = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.42,0.42,1.1,24,1,true),
-    new THREE.MeshStandardMaterial({ color:0x151b26, metalness:0.5, roughness:0.5, side:THREE.DoubleSide })
-  );
-  battGroup.add(battShell);
-  const battCap = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.16,0.16,0.14,16),
-    new THREE.MeshStandardMaterial({ color:0x3a4358, metalness:0.7, roughness:0.3 })
-  );
-  battCap.position.y = 0.62;
-  battGroup.add(battCap);
-  const battFill = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.36,0.36,1,20),
-    new THREE.MeshStandardMaterial({ color:0x1638a0, emissive:0x1638a0, emissiveIntensity:0.3, roughness:0.3, metalness:0.1 })
-  );
-  battFill.position.y = -0.5;
-  battFill.scale.y = 0.02;
-  battGroup.add(battFill);
-  const battGlow = new THREE.PointLight(0x4f8dff, 0, 3);
-  battGlow.position.set(0,0.2,0);
-  battGroup.add(battGlow);
-
-  // the person
-  const walker = makeWalker();
-  scene.add(walker.group);
-  let walkX = -3.6, walkDir = 1, walkPhase = 0;
-
-  function resize(){ fitRenderer(renderer, camera, wrap); }
-  window.addEventListener('resize', resize); resize();
-
-  let last = performance.now();
-  function animate(now){
-    const dt = Math.min(0.05,(now-last)/1000); last = now;
-
-    const speed = (0.5 + traffic.value*1.9) * speedMul;
-    walkX += walkDir*speed*dt;
-    if(walkX > 3.7){ walkX = 3.7; walkDir = -1; }
-    if(walkX < -3.7){ walkX = -3.7; walkDir = 1; }
-
-    walker.group.position.set(walkX, -0.1, 0.6);
-    walker.group.rotation.y = walkDir > 0 ? Math.PI/2 : -Math.PI/2;
-
-    walkPhase += dt*speed*7;
-    walker.legL.rotation.x =  Math.sin(walkPhase)*0.6;
-    walker.legR.rotation.x = -Math.sin(walkPhase)*0.6;
-    walker.armL.rotation.x = -Math.sin(walkPhase)*0.5;
-    walker.armR.rotation.x =  Math.sin(walkPhase)*0.5;
-    walker.group.position.y = -0.1 + Math.abs(Math.sin(walkPhase))*0.02;
-
-    // each tile presses when the walker's foot is over it
-    tiles.forEach(t => {
-      const dist = Math.abs(walkX - t.userData.baseX);
-      const near = dist < 0.6;
-      if(near && !t.userData.pressed){
-        t.userData.pressed = true;
-        triggerStep(0.5);
-      } else if(!near && t.userData.pressed){
-        t.userData.pressed = false;
+/* shared click/tap-to-inspect wiring, used by both simulators */
+function setupInspector(renderer, camera, scene, panelEl, nameEl, closeEl){
+  const raycaster = new THREE.Raycaster();
+  const mouse = new THREE.Vector2();
+  const downPos = {x:0,y:0};
+  closeEl.addEventListener('click', ()=>panelEl.classList.remove('show'));
+  renderer.domElement.addEventListener('pointerdown', e=>{ downPos.x=e.clientX; downPos.y=e.clientY; });
+  renderer.domElement.addEventListener('pointerup', e=>{
+    const dx=e.clientX-downPos.x, dy=e.clientY-downPos.y;
+    if(Math.sqrt(dx*dx+dy*dy)>6) return;
+    const rect = renderer.domElement.getBoundingClientRect();
+    mouse.x = ((e.clientX-rect.left)/rect.width)*2-1;
+    mouse.y = -((e.clientY-rect.top)/rect.height)*2+1;
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(scene.children, true);
+    for(const h of hits){
+      let obj = h.object;
+      while(obj && !obj.userData.name) obj = obj.parent;
+      if(obj && obj.userData.name){
+        nameEl.textContent = obj.userData.name;
+        panelEl.classList.add('show');
+        return;
       }
-      const targetY = near ? -0.34 : -0.24;
-      t.position.y += (targetY - t.position.y) * 0.35;
-      t.userData.mat.emissiveIntensity += ((near?0.55:0) - t.userData.mat.emissiveIntensity) * 0.2;
-    });
-
-    coilGroup.rotation.y += dt * (0.3 + energyBus.activity*7) * speedMul;
-
-    battFill.scale.y = 0.02 + energyBus.charge*0.98;
-    battFill.position.y = -0.5 + battFill.scale.y/2;
-    battFill.material.emissiveIntensity = 0.2 + energyBus.charge*0.9;
-    battGlow.intensity = energyBus.charge*1.6;
-
-    flow.update(dt, energyBus.activity*1.7 + 0.04);
-    rim.intensity = 1.0 + energyBus.activity*0.9;
-
-    controls.update();
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
-  }
-  requestAnimationFrame(animate);
- } catch(err){
-   console.error('Sim A failed to start:', err);
-   const b = document.getElementById('debugBanner');
-   if(b){ b.style.display='block'; b.textContent += 'SIM A ERROR: ' + err.message + '\n'; }
- }
-})();
+    }
+  });
+}
 
 /* =========================================================
-   4. SIM B — exploded internal layers of the tile
+   3. WALK SIMULATOR (Simulator A) — a person walking across
+   the tiled walkway. The tiles have see-through tops so the
+   little generator underneath is visible spinning on every
+   step, and a pulse of light travels down the wire into the
+   battery + bulb — the whole "why it works" chain, at a
+   glance, for the presentation.
    ========================================================= */
-(function simB(){
- try{
-  const wrap = document.querySelector('#simB .sim-canvas-wrap');
-  const canvas = document.getElementById('canvasB');
-  const renderer = makeRenderer(canvas);
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
-  camera.position.set(3.6, 2.6, 4.6);
+const walkWrap = document.getElementById('walkWrap');
+const walkCanvas = document.getElementById('walkCanvas3d');
+const walkRenderer = makeRenderer(walkCanvas);
+const walkScene = new THREE.Scene();
+walkScene.background = new THREE.Color(0x05070c);
 
-  const controls = new THREE.OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.08;
-  controls.autoRotate = !reduceMotion;
-  controls.autoRotateSpeed = 0.5;
-  controls.minDistance = 2.6; controls.maxDistance = 9;
-  controls.target.set(0, 0.4, 0);
+const walkCamera = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+walkCamera.position.set(0.5, 2.6, 9);
 
-  scene.add(new THREE.AmbientLight(0x8fa4ff, 0.6));
-  const dir = new THREE.DirectionalLight(0xffffff, 0.9);
-  dir.position.set(4,6,3);
-  scene.add(dir);
-  const rim = new THREE.PointLight(0x4f8dff, 1.2, 10);
-  rim.position.set(-2,2,-2);
-  scene.add(rim);
+const walkControls = new THREE.OrbitControls(walkCamera, walkRenderer.domElement);
+walkControls.target.set(0.5, 1.0, 0);
+walkControls.enableDamping = true; walkControls.dampingFactor = 0.08;
+walkControls.minDistance = 4; walkControls.maxDistance = 15;
+walkControls.maxPolarAngle = Math.PI/2.1;
 
-  const stack = new THREE.Group();
-  scene.add(stack);
+walkScene.add(new THREE.AmbientLight(0xdfe8ff, 0.55));
+const walkSun = new THREE.DirectionalLight(0xeaf1ff, 0.9);
+walkSun.position.set(4,7,4); walkSun.castShadow = true;
+walkSun.shadow.mapSize.set(1024,1024);
+walkScene.add(walkSun);
+const walkRim = new THREE.PointLight(0x4f8dff, 1.0, 16);
+walkRim.position.set(-4,3,-2);
+walkScene.add(walkRim);
 
-  function layer(geo, mat){
-    const m = new THREE.Mesh(geo, mat);
-    stack.add(m);
-    return m;
+const walkFloor = new THREE.Mesh(
+  new THREE.PlaneGeometry(22,8),
+  new THREE.MeshStandardMaterial({color:0x0a0d12, roughness:0.95, metalness:0.1})
+);
+walkFloor.rotation.x = -Math.PI/2; walkFloor.receiveShadow = true;
+walkScene.add(walkFloor);
+
+function walkMat(color, emissive=0x000000, intensity=0){
+  return new THREE.MeshStandardMaterial({color, emissive, emissiveIntensity:intensity, roughness:0.4, metalness:0.25});
+}
+
+/* ---- tiles: each one a little glass-topped window onto its own generator ---- */
+const WALK_TILE_XS = [-4.5,-1.5,1.5,4.5];
+const walkTiles = WALK_TILE_XS.map(x=>{
+  const g = new THREE.Group(); g.position.set(x,0,0);
+  g.userData = {
+    name:'Kinetic Floor Tile',
+    def:'A spring-loaded panel that dips a few millimetres under a footstep.',
+    func:'That tiny dip is the mechanical input — watch the little generator underneath spin every time someone steps on it.'
+  };
+  const base = new THREE.Mesh(new THREE.BoxGeometry(1.3,0.16,1.3), walkMat(0x12161d));
+  base.position.y = 0.08; base.receiveShadow = true; base.castShadow = true;
+  g.add(base);
+
+  const glassMat = new THREE.MeshPhysicalMaterial({color:0xbfe0ff, transparent:true, opacity:0.35, roughness:0.1, transmission:0.5});
+  const top = new THREE.Mesh(new THREE.BoxGeometry(1.14,0.05,1.14), glassMat);
+  top.position.y = 0.175;
+  g.add(top);
+
+  const rotor = new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,0.08,10), walkMat(0x6c8b98,0x224b5c,0.25));
+  rotor.rotation.x = Math.PI/2; rotor.position.y = 0.1;
+  g.add(rotor);
+  const core = new THREE.Mesh(new THREE.SphereGeometry(0.045,10,10), walkMat(0x8ec3ff,0x4f8dff,0.7));
+  core.position.y = 0.1; g.add(core);
+
+  g.userData.topMesh = top;
+  g.userData.rotor = rotor;
+  g.userData.spin = 0;
+  g.userData.squash = 0;
+  g.userData.armed = true;
+  walkScene.add(g);
+  return g;
+});
+
+/* ---- battery + bulb at the end of the walkway ---- */
+const walkBatt = new THREE.Group(); walkBatt.position.set(6.6,0,0);
+walkBatt.userData = { name:'Battery Bank', def:'Stores the harvested energy pulled in from every tile.', func:'Fills a little more with each footstep along the walkway.' };
+const walkBattCase = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.7,0.44), walkMat(0x151b26));
+walkBattCase.position.y=0.35; walkBattCase.castShadow=true; walkBatt.add(walkBattCase);
+const walkBattWindow = new THREE.Mesh(new THREE.BoxGeometry(0.34,0.5,0.02), walkMat(0x05070c));
+walkBattWindow.position.set(0,0.37,0.23); walkBatt.add(walkBattWindow);
+const walkBattFillMat = walkMat(0xff4b3e,0xff4b3e,0.4);
+const walkBattFill = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.02,0.02), walkBattFillMat);
+walkBattFill.position.set(0,0.13,0.24); walkBatt.add(walkBattFill);
+walkScene.add(walkBatt);
+
+const walkLamp = new THREE.Group(); walkLamp.position.set(8.1,0,0);
+walkLamp.userData = { name:'LED Output Bulb', def:'The load this little walkway demo is powering.', func:'Brightens as more stored energy builds up from foot traffic.' };
+const walkLampPole = new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,1.5,12), walkMat(0x2a2f3a));
+walkLampPole.position.y=0.75; walkLampPole.castShadow=true; walkLamp.add(walkLampPole);
+const walkLampGlassMat = new THREE.MeshPhysicalMaterial({color:0xdfe8ff, transparent:true, opacity:0.4, roughness:0.15, transmission:0.6, emissive:0x8ec3ff, emissiveIntensity:0.15});
+const walkLampGlass = new THREE.Mesh(new THREE.SphereGeometry(0.24,24,20), walkLampGlassMat);
+walkLampGlass.position.y=1.55; walkLamp.add(walkLampGlass);
+walkScene.add(walkLamp);
+const walkBulbLight = new THREE.PointLight(0x8ec3ff, 0.1, 4, 2);
+walkBulbLight.position.set(8.1,1.55,0);
+walkScene.add(walkBulbLight);
+
+/* ---- wire chain, tile to tile, then on to the battery/bulb ---- */
+function walkWireCurve(a,b,liftY){
+  const mid = new THREE.Vector3((a.x+b.x)/2,(a.y+b.y)/2+liftY,(a.z+b.z)/2);
+  return new THREE.QuadraticBezierCurve3(new THREE.Vector3(a.x,a.y,a.z), mid, new THREE.Vector3(b.x,b.y,b.z));
+}
+function walkAddWire(curve,color){
+  const geo = new THREE.TubeGeometry(curve,20,0.018,8,false);
+  const mesh = new THREE.Mesh(geo, walkMat(color,color,0.15));
+  mesh.userData = {name:'Power Wire', def:'Carries the harvested energy toward storage rather than a data signal.', func:'Every pulse of light traveling along it is one footstep worth of energy on its way to the battery.'};
+  walkScene.add(mesh);
+  return curve;
+}
+const walkWireSegs = [];
+for(let i=0;i<WALK_TILE_XS.length-1;i++){
+  walkWireSegs.push(walkAddWire(walkWireCurve(new THREE.Vector3(WALK_TILE_XS[i],0.1,0.65), new THREE.Vector3(WALK_TILE_XS[i+1],0.1,0.65), 0.25), 0x4f8dff));
+}
+walkWireSegs.push(walkAddWire(walkWireCurve(new THREE.Vector3(WALK_TILE_XS[WALK_TILE_XS.length-1],0.1,0.65), new THREE.Vector3(6.6,0.3,0.2), 0.3), 0x4f8dff));
+walkWireSegs.push(walkAddWire(walkWireCurve(new THREE.Vector3(6.6,0.5,0.2), new THREE.Vector3(8.1,0.12,0), 0.35), 0x8ec3ff));
+
+const walkPulseDot = new THREE.Mesh(new THREE.SphereGeometry(0.055,12,12), new THREE.MeshBasicMaterial({color:0x8ec3ff}));
+walkPulseDot.visible = false; walkScene.add(walkPulseDot);
+function walkFirePulseChain(fromIndex){
+  const segs = walkWireSegs.slice(fromIndex);
+  walkPulseDot.visible = true;
+  function step(idx){
+    if(idx>=segs.length){ walkPulseDot.visible=false; return; }
+    const start = performance.now(), dur=260;
+    function frame(now){
+      const t = Math.min(1,(now-start)/dur);
+      walkPulseDot.position.copy(segs[idx].getPointAt(t));
+      if(t<1) requestAnimationFrame(frame);
+      else step(idx+1);
+    }
+    requestAnimationFrame(frame);
   }
+  step(0);
+}
 
-  const coverTop = layer(
-    new THREE.BoxGeometry(1.6,0.14,1.6),
-    new THREE.MeshStandardMaterial({ color:0xcfd6e6, metalness:0.4, roughness:0.35 })
-  );
-  const electrodeTop = layer(
-    new THREE.CylinderGeometry(0.62,0.62,0.03,28),
-    new THREE.MeshStandardMaterial({ color:0xd8b25a, metalness:0.85, roughness:0.25 })
-  );
-  const piezo = layer(
-    new THREE.CylinderGeometry(0.58,0.58,0.16,28),
-    new THREE.MeshStandardMaterial({ color:0x274b9c, emissive:0x1638a0, emissiveIntensity:0.15, metalness:0.2, roughness:0.35, transparent:true, opacity:0.88 })
-  );
-  const electrodeBottom = layer(
-    new THREE.CylinderGeometry(0.62,0.62,0.03,28),
-    new THREE.MeshStandardMaterial({ color:0xd8b25a, metalness:0.85, roughness:0.25 })
-  );
-  const elastic = layer(
-    new THREE.BoxGeometry(1.5,0.22,1.5),
-    new THREE.MeshStandardMaterial({ color:0x1a2130, metalness:0.3, roughness:0.75 })
-  );
-  const baseP = layer(
-    new THREE.BoxGeometry(1.7,0.16,1.7),
-    new THREE.MeshStandardMaterial({ color:0x0d1117, metalness:0.4, roughness:0.7 })
-  );
+/* ---- simple procedural walking figure ---- */
+const walkPerson = new THREE.Group();
+walkPerson.userData = { name:'Person Walking', def:'An ordinary pedestrian crossing the tiled walkway.', func:'Their normal footsteps are the only energy input this whole system needs.' };
+const walkSkin = walkMat(0xf2c9a0), walkShirt = walkMat(0x2d6fd6), walkPants = walkMat(0x1b2230);
+const walkTorso = new THREE.Mesh(new THREE.BoxGeometry(0.36,0.5,0.22), walkShirt);
+walkTorso.position.y = 1.15; walkTorso.castShadow = true; walkPerson.add(walkTorso);
+const walkHead = new THREE.Mesh(new THREE.SphereGeometry(0.14,14,14), walkSkin);
+walkHead.position.y = 1.52; walkHead.castShadow = true; walkPerson.add(walkHead);
 
-  const restY = { coverTop:1.3, electrodeTop:0.78, piezo:0.55, electrodeBottom:0.34, elastic:0.1, baseP:-0.22 };
-  const parts = { coverTop, electrodeTop, piezo, electrodeBottom, elastic, baseP };
+function walkMakeLimb(mat, len, y0){
+  const g = new THREE.Group();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.055,len,10), mat);
+  m.position.y = -len/2; m.castShadow = true;
+  g.add(m); g.position.y = y0;
+  return g;
+}
+const walkLegL = walkMakeLimb(walkPants, 0.62, 0.90); walkLegL.position.x = -0.1; walkPerson.add(walkLegL);
+const walkLegR = walkMakeLimb(walkPants, 0.62, 0.90); walkLegR.position.x =  0.1; walkPerson.add(walkLegR);
+const walkArmL = walkMakeLimb(walkShirt, 0.5, 1.32); walkArmL.position.x = -0.24; walkPerson.add(walkArmL);
+const walkArmR = walkMakeLimb(walkShirt, 0.5, 1.32); walkArmR.position.x =  0.24; walkPerson.add(walkArmR);
 
-  // small rectifier bridge: 4 diode-like cones
-  const bridgeGroup = new THREE.Group();
-  bridgeGroup.position.set(1.15, -0.05, 0.9);
-  scene.add(bridgeGroup);
-  const diodeMat = new THREE.MeshStandardMaterial({ color:0x2a3346, metalness:0.6, roughness:0.35 });
-  const diodePositions = [[-0.14,-0.14],[0.14,-0.14],[-0.14,0.14],[0.14,0.14]];
-  diodePositions.forEach(([x,z]) => {
-    const cone = new THREE.Mesh(new THREE.ConeGeometry(0.06,0.16,10), diodeMat);
-    cone.position.set(x,0,z);
-    cone.rotation.x = Math.PI/2;
-    bridgeGroup.add(cone);
+walkPerson.position.set(-6.2, 0, 0);
+walkScene.add(walkPerson);
+
+const WALK_HALF_RANGE = 6.2;
+const WALK_SPEED = 1.35;
+const WALK_LEG_SWING = 0.55;
+const WALK_BATT_CAP = 600;
+let walkDir = 1;
+let walkPhase = 0;
+let walkStepCount = 0;
+let walkStoredJ = 0;
+
+function walkTryTriggerTile(px){
+  walkTiles.forEach(t=>{
+    const d = Math.abs(px - t.position.x);
+    if(d < 0.35 && t.userData.armed){
+      t.userData.armed = false;
+      t.userData.spin = 1.2;
+      t.userData.squash = 1;
+      walkFirePulseChain(walkTiles.indexOf(t));
+      walkStepCount++;
+      walkStoredJ = Math.min(WALK_BATT_CAP, walkStoredJ + 42);
+      walkUpdateUI();
+    } else if(d > 0.9){
+      t.userData.armed = true;
+    }
+  });
+}
+
+function walkUpdateUI(){
+  const pct = walkStoredJ/WALK_BATT_CAP;
+  walkBattFill.scale.y = Math.max(0.03,pct)*24;
+  walkBattFill.position.y = 0.02 + (Math.max(0.03,pct)*0.5)/2;
+  walkBulbLight.intensity = 1.4*pct;
+  walkLampGlassMat.emissiveIntensity = 0.15 + 0.85*pct;
+  walkLampGlassMat.opacity = 0.4 + 0.4*pct;
+  const statsEl = document.getElementById('walkStats');
+  if(statsEl) statsEl.textContent = `steps: ${walkStepCount}  •  stored: ${Math.round(walkStoredJ)} J`;
+}
+walkUpdateUI();
+
+function walkFit(){ fitRenderer(walkRenderer, walkCamera, walkWrap); }
+window.addEventListener('resize', walkFit); walkFit();
+
+let walkLast = performance.now();
+function walkAnimate(now){
+  requestAnimationFrame(walkAnimate);
+  const dt = Math.min(0.05, (now-walkLast)/1000); walkLast = now;
+
+  walkPerson.position.x += walkDir * WALK_SPEED * dt;
+  if(walkPerson.position.x > WALK_HALF_RANGE){ walkDir = -1; walkPerson.rotation.y = Math.PI; }
+  if(walkPerson.position.x < -WALK_HALF_RANGE){ walkDir = 1; walkPerson.rotation.y = 0; }
+
+  walkPhase += dt * WALK_SPEED * 3.4;
+  walkLegL.rotation.x =  Math.sin(walkPhase) * WALK_LEG_SWING;
+  walkLegR.rotation.x = -Math.sin(walkPhase) * WALK_LEG_SWING;
+  walkArmL.rotation.x = -Math.sin(walkPhase) * WALK_LEG_SWING * 0.8;
+  walkArmR.rotation.x =  Math.sin(walkPhase) * WALK_LEG_SWING * 0.8;
+  walkPerson.position.y = Math.abs(Math.sin(walkPhase)) * 0.03;
+
+  walkTryTriggerTile(walkPerson.position.x);
+
+  walkTiles.forEach(t=>{
+    if(t.userData.spin>0.002){ t.userData.rotor.rotation.z += t.userData.spin; t.userData.spin *= 0.9; }
+    if(t.userData.squash>0.002){
+      t.userData.topMesh.position.y = 0.175 - t.userData.squash*0.03;
+      t.userData.squash *= 0.85;
+    } else {
+      t.userData.topMesh.position.y = 0.175;
+    }
   });
 
-  // small battery
-  const miniBatt = new THREE.Group();
-  miniBatt.position.set(2.0, -0.05, 1.4);
-  scene.add(miniBatt);
-  const miniShell = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.2,0.2,0.5,18),
-    new THREE.MeshStandardMaterial({ color:0x151b26, metalness:0.5, roughness:0.5 })
-  );
-  miniBatt.add(miniShell);
-  const miniFill = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.16,0.16,0.42,16),
-    new THREE.MeshStandardMaterial({ color:0x1638a0, emissive:0x1638a0, emissiveIntensity:0.3, roughness:0.3 })
-  );
-  miniFill.scale.y = 0.05;
-  miniBatt.add(miniFill);
+  walkStoredJ = Math.max(0, walkStoredJ - dt*0.4);
+  walkUpdateUI();
 
-  // wires: piezo -> bridge -> battery
-  const curve1 = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0.4,0.55,0.3),
-    new THREE.Vector3(0.8,0.3,0.6),
-    new THREE.Vector3(1.15,0.02,0.9),
-  ]);
-  const curve2 = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(1.15,-0.05,0.9),
-    new THREE.Vector3(1.6,-0.05,1.15),
-    new THREE.Vector3(2.0,-0.05,1.4),
-  ]);
-  const wireMat = new THREE.MeshStandardMaterial({ color:0x30384a, metalness:0.6, roughness:0.4 });
-  scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve1, 40, 0.018, 6, false), wireMat));
-  scene.add(new THREE.Mesh(new THREE.TubeGeometry(curve2, 40, 0.018, 6, false), wireMat));
-  const flow1 = makeFlowParticles(curve1, 4, 0x8ec3ff, 0.03);
-  const flow2 = makeFlowParticles(curve2, 4, 0x8ec3ff, 0.03);
-  scene.add(flow1.group, flow2.group);
+  walkControls.update();
+  walkRenderer.render(walkScene, walkCamera);
+}
+requestAnimationFrame(walkAnimate);
 
-  stack.position.y = -0.3;
+setupInspector(walkRenderer, walkCamera, walkScene, document.getElementById('infoPanelA'), document.getElementById('infoNameA'), document.getElementById('infoCloseA'));
 
-  function resize(){ fitRenderer(renderer, camera, wrap); }
-  window.addEventListener('resize', resize); resize();
+/* =========================================================
+   3. PARTS LAB — Three.js scene, recolored to match the
+   dark-blue neon theme (cool lighting instead of warm amber)
+   ========================================================= */
+const wrap = document.querySelector('#simCard .sim-canvas-wrap');
+const canvas = document.getElementById('labCanvas3d');
+const labRenderer = makeRenderer(canvas);
+const labScene = new THREE.Scene();
+labScene.background = new THREE.Color(0x05070c);
 
-  let last = performance.now();
-  function animate(now){
-    const dt = Math.min(0.05,(now-last)/1000); last = now;
-    const a = energyBus.activity; // spikes on every real footstep from sim A, then decays
+const labCamera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+labCamera.position.set(3.6, 3.0, 5.6);
 
-    // sits exploded for clarity, pulls together for a beat on every step
-    const gap = 1 - a*0.55;
-    parts.coverTop.position.y = restY.coverTop * gap;
-    parts.electrodeTop.position.y = restY.electrodeTop * gap;
-    parts.piezo.position.y = restY.piezo * gap;
-    parts.electrodeBottom.position.y = restY.electrodeBottom * gap;
-    parts.elastic.position.y = restY.elastic * gap;
-    parts.baseP.position.y = restY.baseP;
+const labControls = new THREE.OrbitControls(labCamera, labRenderer.domElement);
+labControls.target.set(0.5,0.6,0);
+labControls.enableDamping = true; labControls.dampingFactor = 0.08;
+labControls.minDistance = 3; labControls.maxDistance = 11;
+labControls.maxPolarAngle = Math.PI/2.05;
+labControls.autoRotate = !reduceMotion;
+labControls.autoRotateSpeed = 0.35;
 
-    piezo.material.emissiveIntensity = 0.15 + a*1.1;
-    piezo.scale.y = 1 - a*0.18;
+const labAmbient = new THREE.AmbientLight(0xdfe8ff, 0.5);
+labScene.add(labAmbient);
+const labSun = new THREE.DirectionalLight(0xeaf1ff, 0.85);
+labSun.position.set(4,6,3); labSun.castShadow = true;
+labSun.shadow.mapSize.set(1024,1024);
+labScene.add(labSun);
+const LAB_AMBIENT_DAY = 0.5, LAB_AMBIENT_NIGHT = 0.08;
+const LAB_SUN_DAY = 0.85, LAB_SUN_NIGHT = 0.08;
+const LAB_BG_DAY = 0x05070c, LAB_BG_NIGHT = 0x010103;
+const labBgDayColor = new THREE.Color(LAB_BG_DAY), labBgNightColor = new THREE.Color(LAB_BG_NIGHT);
+const labRim = new THREE.PointLight(0x4f8dff, 1.1, 14);
+labRim.position.set(-3,3,-2);
+labScene.add(labRim);
 
-    miniFill.scale.y = 0.05 + energyBus.charge*0.95;
-    miniFill.position.y = -0.21 + (miniFill.scale.y*0.42)/2;
-    miniFill.material.emissiveIntensity = 0.2 + energyBus.charge*0.9;
+const labFloor = new THREE.Mesh(
+  new THREE.PlaneGeometry(14,7),
+  new THREE.MeshStandardMaterial({color:0x0a0d12, roughness:0.9, metalness:0.15})
+);
+labFloor.rotation.x = -Math.PI/2; labFloor.position.y = 0; labFloor.receiveShadow = true;
+labScene.add(labFloor);
 
-    flow1.update(dt, a*1.6 + 0.03);
-    flow2.update(dt, a*1.6 + 0.03);
-    rim.intensity = 1.0 + a*0.8;
+function labChip(color, emissive=0x000000, intensity=0){
+  return new THREE.MeshStandardMaterial({color, emissive, emissiveIntensity:intensity, roughness:0.4, metalness:0.25});
+}
 
-    controls.update();
-    renderer.render(scene, camera);
-    requestAnimationFrame(animate);
+/* ---- 1. Kinetic floor tile ---- */
+const labTile = new THREE.Group(); labTile.position.set(-2.6,0,0.4);
+labTile.userData = {
+  name:'Kinetic Floor Tile',
+  def:'A spring-loaded floor panel, only a few millimetres of travel, sitting on top of the generator mechanism.',
+  func:'Every footstep compresses it briefly — that small compression is the raw mechanical input the whole system runs on.'
+};
+const labTileBase = new THREE.Mesh(new THREE.BoxGeometry(1.05,0.14,1.05), labChip(0x12161d));
+labTileBase.position.y = 0.07; labTileBase.receiveShadow = true; labTileBase.castShadow = true;
+labTile.add(labTileBase);
+const labTilePlate = new THREE.Mesh(new THREE.BoxGeometry(0.92,0.09,0.92), labChip(0xcfd6e6, 0x1638a0, 0.08));
+labTilePlate.position.y = 0.19; labTilePlate.castShadow = true;
+labTile.add(labTilePlate);
+labScene.add(labTile);
+
+/* ---- 2. Electromagnetic generator ---- */
+const labGen = new THREE.Group(); labGen.position.set(-1.3,0,0.4);
+labGen.userData = {
+  name:'Electromagnetic Generator',
+  def:"Converts the tile's mechanical push into alternating current — a magnet spinning inside a coil, the same principle as a bicycle dynamo.",
+  func:'Spins briefly on every step; a heavier or harder step spins it faster and produces more raw AC energy.'
+};
+const labGenBase = new THREE.Mesh(new THREE.CylinderGeometry(0.34,0.38,0.4,20), labChip(0x12161d));
+labGenBase.position.y=0.2; labGenBase.castShadow=true; labGen.add(labGenBase);
+const labGenRotor = new THREE.Mesh(new THREE.CylinderGeometry(0.24,0.24,0.5,6), labChip(0x6c8b98,0x224b5c,0.2));
+labGenRotor.position.y=0.46; labGenRotor.castShadow=true; labGen.add(labGenRotor);
+const labGenCore = new THREE.Mesh(new THREE.SphereGeometry(0.08,10,10), labChip(0x8ec3ff, 0x4f8dff, 0.7));
+labGenCore.position.y=0.46; labGen.add(labGenCore);
+labScene.add(labGen);
+
+/* ---- 3. Bridge rectifier ---- */
+const labRect = new THREE.Group(); labRect.position.set(-0.2,0,0.4);
+labRect.userData = {
+  name:'Bridge Rectifier',
+  def:'Four diodes arranged to flip the negative half of each AC wave, turning fluctuating AC into one-directional DC.',
+  func:"Sits between the generator and the battery — about 8% of the step's energy is lost here as heat during conversion."
+};
+const labRectBody = new THREE.Mesh(new THREE.BoxGeometry(0.5,0.32,0.5), labChip(0x161a22));
+labRectBody.position.y=0.16; labRectBody.castShadow=true; labRect.add(labRectBody);
+for(let i=0;i<4;i++){
+  const a = (i/4)*Math.PI*2 + Math.PI/4;
+  const diode = new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,0.14,8), labChip(0x8a6a3a,0xffb020,0.3));
+  diode.position.set(Math.cos(a)*0.16, 0.4, Math.sin(a)*0.16);
+  labRect.add(diode);
+}
+labScene.add(labRect);
+
+/* ---- 4. Battery bank ---- */
+const labBatt = new THREE.Group(); labBatt.position.set(0.95,0,0.4);
+labBatt.userData = {
+  name:'Battery Bank',
+  def:'A small rechargeable cell stack that stores the harvested DC energy until it is needed.',
+  func:'Charges a little with every footstep and slowly self-discharges — this fill level always mirrors the live charge percentage.'
+};
+const labBattCase = new THREE.Mesh(new THREE.BoxGeometry(0.6,0.7,0.44), labChip(0x151b26));
+labBattCase.position.y=0.35; labBattCase.castShadow=true; labBatt.add(labBattCase);
+const labBattWindow = new THREE.Mesh(new THREE.BoxGeometry(0.34,0.5,0.02), labChip(0x05070c));
+labBattWindow.position.set(0,0.37,0.23); labBatt.add(labBattWindow);
+const labBattFillMat = labChip(0xff4b3e, 0xff4b3e, 0.4);
+const labBattFill = new THREE.Mesh(new THREE.BoxGeometry(0.3,0.02,0.02), labBattFillMat);
+labBattFill.position.set(0,0.13,0.24); labBatt.add(labBattFill);
+const labBattCap = new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,0.1,10), labChip(0xb9c4d8,0x000000,0));
+labBattCap.position.set(0,0.75,0); labBatt.add(labBattCap);
+labScene.add(labBatt);
+
+/* ---- 5. Charge / load controller ---- */
+const labCtrl = new THREE.Group(); labCtrl.position.set(2.05,0,0.4);
+labCtrl.userData = {
+  name:'Charge / Load Controller',
+  def:'A small microcontroller circuit that watches the battery charge level and the day/night switch.',
+  func:'Turns the bulb on only in night mode, and load-sheds it before the battery is driven to empty, to protect the cells.'
+};
+const labCtrlBoard = new THREE.Mesh(new THREE.BoxGeometry(0.7,0.06,0.5), labChip(0x14213a));
+labCtrlBoard.position.y=0.05; labCtrlBoard.castShadow=true; labCtrl.add(labCtrlBoard);
+const labCtrlChip = new THREE.Mesh(new THREE.BoxGeometry(0.28,0.08,0.28), labChip(0x0a0d12));
+labCtrlChip.position.set(0,0.12,0); labCtrl.add(labCtrlChip);
+const labCtrlLed = new THREE.Mesh(new THREE.SphereGeometry(0.045,10,10), labChip(0x2a3a52,0x000000,0));
+labCtrlLed.position.set(0.24,0.13,0.15); labCtrl.add(labCtrlLed);
+labScene.add(labCtrl);
+
+/* ---- 6. LED output bulb ---- */
+const labLamp = new THREE.Group(); labLamp.position.set(3.15,0,0.1);
+labLamp.userData = {
+  name:'LED Output Bulb',
+  def:'The load the whole system exists to power — a low-draw LED lamp.',
+  func:'Lights only in night mode while the controller allows it, and step-dims as the battery nears its safety cutoff.'
+};
+const labPole = new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,1.5,12), labChip(0x2a2f3a));
+labPole.position.y=0.75; labPole.castShadow=true; labLamp.add(labPole);
+const labSocket = new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.12,0.18,16), labChip(0x161a22));
+labSocket.position.y=1.5; labLamp.add(labSocket);
+const labGlassMat = new THREE.MeshPhysicalMaterial({color:0xdfe8ff, transparent:true, opacity:0.4, roughness:0.15, transmission:0.6, emissive:0x8ec3ff, emissiveIntensity:0.15});
+const labGlass = new THREE.Mesh(new THREE.SphereGeometry(0.28,24,20), labGlassMat);
+labGlass.position.y=1.82; labLamp.add(labGlass);
+const labFilamentMat = labChip(0x8ec3ff, 0x4f8dff, 0.15);
+const labFilament = new THREE.Mesh(new THREE.TorusKnotGeometry(0.1,0.018,60,8,2,3), labFilamentMat);
+labFilament.position.y=1.82; labFilament.rotation.x=Math.PI/2; labLamp.add(labFilament);
+labScene.add(labLamp);
+const labBulbLight = new THREE.PointLight(0x8ec3ff, 0.1, 4.2, 2);
+labBulbLight.position.set(3.15,1.82,0.1);
+labScene.add(labBulbLight);
+
+function labSetBulb(pct){
+  const b = Math.max(0, pct/100);
+  labBulbLight.intensity = 1.6*b;
+  labGlassMat.emissiveIntensity = 0.15 + 0.85*b;
+  labGlassMat.opacity = 0.4 + 0.4*b;
+  labFilamentMat.emissiveIntensity = 0.15 + 1.3*b;
+}
+function labSetBattery(pct){
+  const p = Math.max(0.03, pct/100);
+  labBattFill.scale.y = p*24;
+  labBattFill.position.y = 0.02 + (p*0.5)/2;
+  const r = pct<25 ? 1 : pct<80 ? 1-((pct-25)/55) : 0.15;
+  const g = pct<25 ? pct/25*0.5 : 0.6;
+  labBattFillMat.color.setRGB(0.9*r+0.1, 0.75*g+0.1, 0.15);
+  labBattFillMat.emissive.setRGB(0.9*r+0.1, 0.75*g+0.1, 0.15);
+}
+
+/* ---- wires ---- */
+function labWireCurve(a,b,liftY){
+  const mid = new THREE.Vector3((a.x+b.x)/2,(a.y+b.y)/2+liftY,(a.z+b.z)/2);
+  return new THREE.QuadraticBezierCurve3(new THREE.Vector3(a.x,a.y,a.z), mid, new THREE.Vector3(b.x,b.y,b.z));
+}
+function labAddWire(curve,color,isPower){
+  const geo = new THREE.TubeGeometry(curve,20,0.02,8,false);
+  const mesh = new THREE.Mesh(geo, labChip(color, color, 0.15));
+  mesh.userData = isPower
+    ? {name:'Power Wire', def:'A conductor carrying the higher-current harvested energy rather than a data signal.', func:'Carries mechanical→AC→DC→stored energy along the chain, step by step.'}
+    : {name:'Signal Wire', def:'A conductor carrying a low-current data or control signal between components.', func:'Carries the battery-charge reading to the controller — never the load power itself.'};
+  labScene.add(mesh);
+  return curve;
+}
+const curveTileGen  = labAddWire(labWireCurve(new THREE.Vector3(-2.1,0.22,0.4), new THREE.Vector3(-1.55,0.42,0.4), 0.3), 0x4f8dff, true);
+const curveGenRect  = labAddWire(labWireCurve(new THREE.Vector3(-1.05,0.42,0.4), new THREE.Vector3(-0.42,0.3,0.4), 0.3), 0x4f8dff, true);
+const curveRectBatt = labAddWire(labWireCurve(new THREE.Vector3(0.05,0.3,0.4), new THREE.Vector3(0.7,0.35,0.4), 0.3), 0x4f8dff, true);
+const curveBattCtrl = labAddWire(labWireCurve(new THREE.Vector3(1.2,0.5,0.4), new THREE.Vector3(1.75,0.12,0.4), 0.3), 0x8ec3ff, false);
+const curveCtrlLamp = labAddWire(labWireCurve(new THREE.Vector3(2.35,0.12,0.4), new THREE.Vector3(3.1,0.12,0.15), 0.35), 0x4f8dff, true);
+
+const labPulseDot = new THREE.Mesh(new THREE.SphereGeometry(0.06,12,12), new THREE.MeshBasicMaterial({color:0x8ec3ff}));
+labPulseDot.visible = false; labScene.add(labPulseDot);
+
+function labFirePulse(curve, dur, onDone){
+  labPulseDot.visible = true;
+  const start = performance.now();
+  function step(now){
+    const t = Math.min(1,(now-start)/dur);
+    labPulseDot.position.copy(curve.getPointAt(t));
+    if(t<1) requestAnimationFrame(step);
+    else { labPulseDot.visible=false; if(onDone) onDone(); }
   }
-  requestAnimationFrame(animate);
- } catch(err){
-   console.error('Sim B failed to start:', err);
-   const b = document.getElementById('debugBanner');
-   if(b){ b.style.display='block'; b.textContent += 'SIM B ERROR: ' + err.message + '\n'; }
- }
-})();
+  requestAnimationFrame(step);
+}
+function labFireChain(curves, dur, onEach, onDone){
+  let i=0;
+  function next(){
+    if(i>=curves.length){ if(onDone) onDone(); return; }
+    if(onEach) onEach(i);
+    labFirePulse(curves[i], dur, ()=>{ i++; next(); });
+  }
+  next();
+}
+
+let labGenSpin = 0;
+function labSpinGenerator(strength){ labGenSpin = 0.25 + strength*0.55; }
+
+/* ---- raycaster click-to-inspect ---- */
+setupInspector(labRenderer, labCamera, labScene, document.getElementById('infoPanel'), document.getElementById('infoName'), document.getElementById('infoClose'));
+
+function resize(){ fitRenderer(labRenderer, labCamera, wrap); }
+window.addEventListener('resize', resize); resize();
+
+function labAnimate(){
+  requestAnimationFrame(labAnimate);
+  if(labGenSpin>0.002){
+    labGenRotor.rotation.y += labGenSpin;
+    labGenSpin *= 0.94;
+  }
+  if(typeof state !== 'undefined'){
+    const isNight = state.night;
+    const targetAmbient = isNight ? LAB_AMBIENT_NIGHT : LAB_AMBIENT_DAY;
+    const targetSun = isNight ? LAB_SUN_NIGHT : LAB_SUN_DAY;
+    labAmbient.intensity += (targetAmbient - labAmbient.intensity) * 0.06;
+    labSun.intensity += (targetSun - labSun.intensity) * 0.06;
+    const targetBg = isNight ? labBgNightColor : labBgDayColor;
+    labScene.background.lerp(targetBg, 0.06);
+  }
+  labControls.update();
+  labRenderer.render(labScene, labCamera);
+}
+labAnimate();
+
+labSetBattery(0); labSetBulb(0);
+
+/* =========================================================
+   4. PHYSICS + STATE — drives the 3D lab from the traffic slider
+   ========================================================= */
+const G = 9.81;
+const TILE_COMPRESSION = 0.006;
+const MECH_TO_AC_EFF = 0.30;
+const RECTIFIER_EFF = 0.92;
+const CHARGE_EFF = 0.90;
+const DISCHARGE_EFF = 0.95;
+const BATTERY_CAPACITY_J = 600;
+const SELF_DISCHARGE_J_S = 0.015;
+const BULB_WATT = 0.35;
+const LOW_CUTOFF_PCT = 6;
+
+const state = {
+  rate:10, night:false, batteryJ:0, bulbPower:0,
+  steps:0, mechEnergy:0, storedEnergy:0, accumulator:0, loadShedLogged:false
+};
+
+const $ = id => document.getElementById(id);
+
+function clamp(v,a,b){ return Math.max(a,Math.min(b,v)); }
+function batteryPct(){ return state.batteryJ/BATTERY_CAPACITY_J*100; }
+function addLog(text){ $('log').textContent = text; }
+
+const weightProfiles = [[22,'a child'],[70,'an adult'],[70,'an adult'],[95,'a heavy adult']];
+
+function doStep(){
+  state.steps++;
+  stepPulse = Math.min(1, stepPulse + 0.6);
+  const [w, who] = weightProfiles[Math.floor(Math.random()*weightProfiles.length)];
+  const dynamicLoad = 1.2 + Math.random()*0.6;
+  const irregularity = 0.9 + Math.random()*0.2;
+  const force = w * G * dynamicLoad * irregularity;
+  const mech = force * TILE_COMPRESSION;
+  const ac = mech * MECH_TO_AC_EFF;
+  const dc = ac * RECTIFIER_EFF;
+  const stored = dc * CHARGE_EFF;
+
+  state.mechEnergy += mech;
+  state.storedEnergy += stored;
+  state.batteryJ = clamp(state.batteryJ + stored, 0, BATTERY_CAPACITY_J);
+
+  addLog(`Step by ${who} → ${mech.toFixed(1)}J mechanical → ${stored.toFixed(1)}J stored (chain eff. ${Math.round(stored/mech*100)}%)`);
+
+  labSpinGenerator(clamp((w-22)/(150-22),0,1)+0.3);
+}
+
+function updateUI(){
+  const pct = batteryPct(), pctR = Math.round(pct);
+
+  labSetBattery(pctR);
+  labSetBulb(state.bulbPower);
+
+  $('btnNight').classList.toggle('active', state.night);
+
+
+  const warn = pct<=LOW_CUTOFF_PCT && state.night;
+  const dotEl = $('statusDot');
+  dotEl.className = 'status-dot' + (warn?' danger':state.bulbPower>0?' warn':'');
+  $('statusText').textContent = warn
+    ? `CRITICAL — battery at ${pctR}%, load-shed to protect the cells`
+    : state.night
+      ? (state.bulbPower>0 ? `DISCHARGING — powering the bulb (battery ${pctR}%)` : `NIGHT — battery empty, bulb off`)
+      : (state.rate>0 ? `CHARGING (battery ${pctR}%)` : `IDLE — waiting for footsteps (battery ${pctR}%)`);
+}
+
+function applyBulbLogic(){
+  if(state.night && batteryPct()>LOW_CUTOFF_PCT){
+    state.bulbPower = 100;
+    state.loadShedLogged = false;
+  } else if(state.night){
+    state.bulbPower = 0;
+    if(!state.loadShedLogged){ addLog('Battery hit its low-charge cutoff — controller load-shed the bulb.'); state.loadShedLogged = true; }
+  } else {
+    state.bulbPower = 0;
+  }
+}
+
+setInterval(()=>{
+  state.batteryJ = clamp(state.batteryJ - SELF_DISCHARGE_J_S, 0, BATTERY_CAPACITY_J);
+  state.accumulator += state.rate/60;
+  while(state.accumulator>=1){ doStep(); state.accumulator -= 1; }
+
+  applyBulbLogic();
+  if(state.bulbPower>0){
+    state.batteryJ = clamp(state.batteryJ - BULB_WATT/DISCHARGE_EFF, 0, BATTERY_CAPACITY_J);
+  }
+
+  updateUI();
+},1000);
+
+/* ---- controls ---- */
+function syncRate(val){
+  state.rate = Number(val);
+  readout.textContent = state.rate+'/min';
+  syncSliderFill();
+  updateUI();
+}
+slider.addEventListener('input', e=>syncRate(e.target.value));
+
+$('btnStep').addEventListener('click', doStep);
+
+$('btnCharge').addEventListener('click', ()=>{
+  state.batteryJ = BATTERY_CAPACITY_J;
+  addLog('Battery quick-charged to 100% for demo purposes.');
+  applyBulbLogic();
+  updateUI();
+});
+
+function toggleNight(){
+  state.night = !state.night;
+  state.loadShedLogged = false;
+  addLog(state.night ? 'Switched to NIGHT MODE — controller now powers the bulb from the battery.' : 'Switched to DAY MODE — bulb off, battery just charges.');
+  applyBulbLogic();
+  updateUI();
+}
+$('btnNight').addEventListener('click', toggleNight);
+
+let demoTimer=null;
+$('btnDemo').addEventListener('click', ()=>{
+  clearInterval(demoTimer);
+  addLog('Running rush-hour demo: traffic ramps up, peaks, then tapers off.');
+  const seq = [4,10,18,26,34,40,34,26,18,10,4,0];
+  let i=0;
+  demoTimer = setInterval(()=>{
+    slider.value = seq[i];
+    syncRate(seq[i]);
+    i++;
+    if(i>=seq.length) clearInterval(demoTimer);
+  },1400);
+});
+
+$('btnReset').addEventListener('click', ()=>{
+  clearInterval(demoTimer);
+  state.batteryJ=0; state.bulbPower=0; state.night=false; state.steps=0;
+  state.mechEnergy=0; state.storedEnergy=0; state.accumulator=0; state.loadShedLogged=false;
+  slider.value=10; syncRate(10);
+  addLog('System reset.');
+  updateUI();
+});
+
+syncRate(slider.value);
 
 if(typeof THREE === 'undefined'){
-  console.error('Three.js did not load — check your internet connection, since the 3D scenes are loaded from a CDN.');
+  console.error('Three.js did not load — check your internet connection, since the 3D scene is loaded from a CDN.');
 }
 </script>
 </body>
